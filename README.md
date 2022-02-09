@@ -1,2 +1,3 @@
 # url-shortener-rust
-Simple URL shortener writing using Rust
+
+Dead simple URL shortener using Rust
