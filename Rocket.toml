@@ -1,0 +1,2 @@
+[global.databases]
+shorten_urls = { url = "database.sqlite" }
