@@ -11,9 +11,11 @@ use rocket_contrib::json::Json;
 use rocket_contrib::databases::diesel;
 use serde::Deserialize;
 use rocket::response::Redirect;
-use models::NewShortenUrl;
+use crate::models::NewShortenUrl;
 
 use crate::DbConn;
+
+use nanoid::nanoid;
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
 pub struct NewShortUrlBody {
@@ -26,7 +28,7 @@ pub fn index() -> &'static str {
 }
 
 #[get("/go/<hash_id>")]
-pub fn get_url(hash_id: i32, conn: DbConn) -> Redirect {
+pub fn get_url(hash_id: String, conn: DbConn) -> Redirect {
     let result = shorten_urls::table
         .select(shorten_urls::url)
         .filter(shorten_urls::id.eq(hash_id))
@@ -43,9 +45,13 @@ pub fn get_url(hash_id: i32, conn: DbConn) -> Redirect {
 
 #[post("/short", format = "application/json", data = "<input>")]
 pub fn new_short_url(input: Json<NewShortUrlBody>, conn: DbConn) -> String {
-    let inserted_url = diesel::insert_into(shorten_urls::table)
-        .values(NewShortenUrl {url: input.url.to_string()})
+    let hash_id = nanoid!();
+    let _result = diesel::insert_into(shorten_urls::table)
+        .values(NewShortenUrl {
+            id: hash_id.to_string(),
+            url: input.url.to_string()
+        })
         .execute(&*conn);
 
-    format!("print test {:?}", inserted_url)
+    format!("{}", hash_id.to_string())
 }

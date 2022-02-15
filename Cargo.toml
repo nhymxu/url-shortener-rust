@@ -2,6 +2,7 @@
 name = "url_shortener"
 version = "0.1.0"
 authors = ["Dung Nguyen <contact@dungnt.net>"]
+edition = "2021"
 
 [dependencies]
 rocket = "0.4.10"
@@ -17,3 +18,5 @@ diesel = { version = "1.4.8", features = ["sqlite"] }
 
 # Bundled SQLite
 libsqlite3-sys = { version = "0.22.2", features = ["bundled"], optional = true }
+
+nanoid = "0.4.0"

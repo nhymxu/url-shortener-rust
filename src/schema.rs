@@ -1,6 +1,6 @@
 diesel::table! {
     shorten_urls (id) {
-        id -> Integer,
+        id -> Text,
         url -> Text,
     }
 }
